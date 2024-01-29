@@ -1,0 +1,15 @@
+{
+  "dependencies": [
+    {
+      "name": "imgui",
+      "features": [
+        "docking-experimental",
+        "dx11-binding",
+        "win32-binding"
+      ]
+    },
+    "fmt",
+    "stb",
+    "dirent"
+  ]
+}
