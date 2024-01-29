@@ -40,6 +40,7 @@ namespace Dia {
 		std::vector<MatrixXf> paths;
 		MatrixXf points;
 		void RenderUnion(ImVec2 origin);
+		void GeneratePoints();
 		bool BasicSettings();
 		int rotation;
 		int position[2];

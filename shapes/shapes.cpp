@@ -77,7 +77,6 @@ namespace Dia {
 	}
 
 	void Shape::RenderShape(ImVec2 origin) {
-		GeneratePoints();
 
 
 		static ImVector<ImVec2> rpoints;
@@ -154,6 +153,7 @@ namespace Dia {
 	}
 	void Union::RenderUnion(ImVec2 origin)
 	{
+		GeneratePoints();
 		ImDrawList* draw_list = ImGui::GetWindowDrawList();
 
 		for (auto &s : shapes) {
@@ -161,6 +161,23 @@ namespace Dia {
 		}
 		draw_list->AddRectFilled(ImVec2(origin.x + -2 + position[0], origin.y - 2 + position[1]), ImVec2(origin.x + 2 + position[0], origin.y + 2 + position[1]), IM_COL32(255, 255, 255, 255), 2);
 
+	}
+	void Union::GeneratePoints()
+	{
+		MatrixXf mat;
+		for (auto &c : shapes) {
+			c->GeneratePoints();
+			mat = c->points;
+			Eigen::Vector2f pos;
+			pos << position[0], position[1];
+			Eigen::Vector2f rpos;
+			rpos << rotationCenter[0], rotationCenter[1];
+			Matrix2f rot = Dia::rotToMat(rotation);
+			for (auto s : mat.colwise()) {
+			    s = (rot * (s+rpos))+pos;
+			}
+			c->points = mat;
+		}
 	}
 	bool Union::BasicSettings()
 	{
